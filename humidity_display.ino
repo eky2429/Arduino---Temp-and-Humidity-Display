@@ -56,18 +56,25 @@ float celcius_to_fahrenheit(float c) {
   return (c * (9.0 / 5.0)) + 32.0;
 }
 
-void outputInfo(float temp_c, float temp_f, float hum){
-  lcd.setCursor(0, 1);
+void outputInfo(float temp_c, float hum){
+  lcd.setCursor(0, 0);
 
   lcd.print( "T = " );
-  lcd.print( temp_c, 1 );
-  lcd.print( " deg. C, " );
-  lcd.print( temp_f, 1 );
-  lcd.println( " deg. F" );
+
+  if (isCelcius) {
+    lcd.print( temp_c, 1 );
+    lcd.print( " deg. C" );
+  } else {
+    float temp_f = celcius_to_fahrenheit(temp_c);
+    lcd.print( temp_f, 1 );
+    lcd.print( " deg. F" );
+  }
+  lcd.setCursor(0, 1);
+
 
   lcd.print("H = ");
   lcd.print( hum, 1 );
-  lcd.println( "%" );
+  lcd.print( "%" );
 }
 
 void debugInfo(float temp_c, float hum){
@@ -96,7 +103,7 @@ void loop() {
      true, then a measurement is available. */
   if( measure_environment( &temperature, &humidity ) == true )
   {
-    // outputInfo(temperature, temperature_f, humidity)
+    outputInfo(temperature, humidity);
     debugInfo(temperature, humidity);
   }
 
@@ -123,6 +130,8 @@ void loop() {
       // only toggle the LED if the new button state is HIGH
       if (buttonState == HIGH) {
         isCelcius = !isCelcius;
+        outputInfo(temperature, humidity);
+        debugInfo(temperature, humidity);
       }
     }
   }
