@@ -30,6 +30,10 @@ void setup() {
   Serial.begin(9600);
   lcd.begin(16, 2);
   lcd.print("BEGIN");
+  pinMode(DHT_SENSOR_PIN, INPUT);
+  pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(FAHR_LED_PIN, OUTPUT);
+  pinMode(CELS_LED_PIN, OUTPUT);
 }
 
 /*
